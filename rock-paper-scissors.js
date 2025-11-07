@@ -4,7 +4,7 @@
 // Array of choices
 const choices = ["rock", "paper", "scissors"];
 
-// Scoring
+// Scores
 let computerScore = 0;
 let humanScore = 0;
 
@@ -101,8 +101,34 @@ function playRound(computerChoice, humanChoice) {
 
 }
 
-let computer = getComputerChoice();
-let human = getHumanChoice();
-playRound(computer, human);
-console.log("Computer score: " + computerScore);
-console.log("Player score: " + humanScore);
+// Play 5 rounds of rock-paper-scissors
+function playGame() {
+
+    // Reset scores
+    computerScore = 0;
+    humanScore = 0;
+
+    // Loop 5 times
+    for (let k = 0; k < 5; k++) {
+
+        // Get choices
+        let computerChoice = getComputerChoice();
+        let humanChoice = getHumanChoice();
+
+        // Play the round
+        playRound(computerChoice, humanChoice);
+
+    }
+
+    // Display scores
+    console.log("Computer score: " + computerScore);
+    console.log("Your score: " + humanScore);
+
+    // Say who won
+    if (computerScore > humanScore) console.log("You lose!");
+    else if (computerScore < humanScore) console.log("You win!");
+    else console.log("It's a tie!");
+
+}
+
+playGame();

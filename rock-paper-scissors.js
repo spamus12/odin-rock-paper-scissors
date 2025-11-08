@@ -11,31 +11,26 @@ let humanScore = 0;
 // Choose a random integer from 0 to 2 and return the choice from the array
 let getComputerChoice = () => { return choices[ Math.floor( Math.random() * 3 ) ] };
 
-// Get the player to choose an option
-// The choices are case-insensitive
-let getHumanChoice = () => {
-    let choice = prompt("Rock, paper, or scissors?");
-    return choice.toLowerCase();
-};
-
 // Play a round of rock-paper-scissors
+let gameOver = false;
 function playRound(computerChoice, humanChoice) {
+
+    // Result element
+    const resultElement = document.querySelector("p.result");
 
     // Functions for wins, losses, and ties
     let win = () => {
-        console.log("You win! " + humanChoice + " beats " + computerChoice + "!");
+        resultElement.textContent = "You win! " + humanChoice + " beats " + computerChoice + "!";
         humanScore++;
     };
 
     let lose = () => {
-        console.log("You lose! " + computerChoice + " beats " + humanChoice + "!");
+        resultElement.textContent = "You lose! " + computerChoice + " beats " + humanChoice + "!";
         computerScore++;
     };
 
     let tie = () => {
-        console.log("It's a tie!");
-        humanScore++;
-        computerScore++;
+        resultElement.textContent = "It's a tie!";
     }
 
     // Go through every combination and determine the winner
@@ -101,34 +96,48 @@ function playRound(computerChoice, humanChoice) {
 
 }
 
-// Play 5 rounds of rock-paper-scissors
-function playGame() {
+// Display scores
+let updateScores = () => {
+    const humanScoreDisplay = document.querySelector("p.h-score");
+    const computerScoreDisplay = document.querySelector("p.c-score");
 
-    // Reset scores
-    computerScore = 0;
-    humanScore = 0;
+    humanScoreDisplay.textContent = "Your score: " + humanScore;
+    computerScoreDisplay.textContent = "Computer score: " + computerScore;
 
-    // Loop 5 times
-    for (let k = 0; k < 5; k++) {
-
-        // Get choices
-        let computerChoice = getComputerChoice();
-        let humanChoice = getHumanChoice();
-
-        // Play the round
-        playRound(computerChoice, humanChoice);
-
+    // If a score is at least 5, then they are the winner
+    const winnerDisplay = document.querySelector("p.winner");
+    if (humanScore >= 5) {
+        gameOver = true;
+        winnerDisplay.textContent = "You win!";
+    } else if (computerScore >= 5) {
+        gameOver = true;
+        winnerDisplay.textContent = "You lose!";
     }
+};
 
-    // Display scores
-    console.log("Computer score: " + computerScore);
-    console.log("Your score: " + humanScore);
+// Define button behaviors
+let rockButton = () => {
+    playRound(getComputerChoice(), "rock");
+    updateScores();
+};
 
-    // Say who won
-    if (computerScore > humanScore) console.log("You lose!");
-    else if (computerScore < humanScore) console.log("You win!");
-    else console.log("It's a tie!");
+let paperButton = () => {
+    playRound(getComputerChoice(), "paper");
+    updateScores();
+};
 
-}
+let scissorsButton = () => {
+    playRound(getComputerChoice(), "scissors");
+    updateScores();
+};
 
-playGame();
+// Assign button behaviors
+const rButton = document.querySelector("button.rock");
+rButton.addEventListener("click", rockButton);
+
+const pButton = document.querySelector("button.paper");
+pButton.addEventListener("click", paperButton);
+
+const sButton = document.querySelector("button.scissors");
+sButton.addEventListener("click", scissorsButton);
+
